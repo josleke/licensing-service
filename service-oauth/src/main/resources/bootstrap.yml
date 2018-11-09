@@ -1,0 +1,13 @@
+spring:
+ application:
+    name: oauth2-service
+ profiles:
+    active: dev
+ cloud:
+    config:
+      name: organizationms
+      uri: http://localhost:8888
+
+management:
+  security:
+    enabled: false

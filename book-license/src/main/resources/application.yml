@@ -1,0 +1,41 @@
+logging:
+  level:
+    com.jade: DEBUG
+    org.apache: INFO
+    org.apache.tomcat.util: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8089/auth/user
+    client:
+      client-id: startup
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        inboundOrgChanges:
+          destination:  orgChangeTopic
+          content-type: application/json
+          group: licensingGroup
+#        input:
+#          destination:  orgChangeTopic
+#          content-type: application/json
+#          group: licensingGroup
+        rabbit:
+          binder:
+            nodes: localhost
+            brokers: localhost

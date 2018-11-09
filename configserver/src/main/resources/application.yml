@@ -1,0 +1,55 @@
+server:
+  port: 8888
+
+#
+#   This is the core configuration for a configuration service.  I have two examples here:
+#
+#       -  A configuration service which completelty loads the configuration for the services
+#          from the local file server of the config service.  This should only be used for
+#          demonstration purposes or for a small application with a limited number of services.
+#
+#       -  A configuraton service that uses a git-based repository to read the files from
+#
+
+
+####################################
+spring:
+  application:
+     name: configsvr
+  cloud:
+    config:
+      server:
+        encrypt:
+          enabled: false
+        git:
+          uri: https://bitbucket.org/baseproduct/temp.git
+          searchPaths: config/bookms,config/organizationms,config/zuulservice,config/authms,config/specialroutems
+          username: josleke
+          password: programmer@990
+#          basedir: ${user.home}/MySpace/temp-repo/
+#          force-pull: true
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+####
+#Classpath and file-based solution
+####
+
+#spring:
+#  profiles:
+#    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          searchLocations: file:///Users/josleke/IdeaProjects/book-ms/configserver/src/main/resources/config/bookms
+#          searchLocations: classpath:config/,classpath:config/bookms
+

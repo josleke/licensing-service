@@ -1,0 +1,14 @@
+
+
+tracer.property: "I AM ZUUL (Service Gateway) Dev"
+zuul:
+  ignored-services: '*'
+  prefix: /api
+  routes:
+      organizationms: /organization/**
+      bookms: /license/**
+      # Keyname Zuul will use to identify the service internally, say the service was written in Python
+      licensestatic:
+              path: /licensestatic/**
+#              url: http://licenseservice-static:8081
+              serviceId: licensestatic   # Defines a service ID that will be used to look up the service in Ribbon

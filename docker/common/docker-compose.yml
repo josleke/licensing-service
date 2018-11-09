@@ -1,0 +1,114 @@
+version: '2'
+
+services:
+  eurekaserver:
+   image:   jade/discovery-service:${BUILD_NAME}
+   mem_limit: 1073741824
+   ports:
+       - "8761:8761"
+
+  configserver:
+    image: jade/config-service:${BUILD_NAME}
+    mem_limit: 1000000000
+    ports:
+       - "8888:8888"
+    links:
+       - "eurekaserver:eurekaserver"
+    environment:
+       EUREKASERVER_PORT: "8761"
+       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+       ENCRYPT_KEY:       "IMSYMMETRIC"
+
+  zuulserver:
+    image: jade/gateway-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "5555:5555"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "configserver:configserver"
+    environment:
+      PROFILE: "dev"
+      SERVER_PORT: "5555"
+      EUREKASERVER_PORT: "8761"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+  authenticationservice:
+    image: jade/oauth-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8089:8089"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "configserver:configserver"
+      - "zuulserver:zuulserver"
+    environment:
+      PROFILE: "stage"
+      SERVER_PORT: "8089"
+      EUREKASERVER_PORT: "8761"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ENCRYPT_KEY: "IMSYMMETRIC"
+
+  licensingservice:
+    image: jade/license-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8080:8080"
+    links:
+          - "eurekaserver:eurekaserver"
+          - "configserver:configserver"
+          - "zuulserver:zuulserver"
+          - "authenticationservice:authenticationservice"
+#          - "authenticationservice:authenticationservice"
+    environment:
+      PROFILE: "stage"
+      SERVER_PORT: "8080"
+      EUREKASERVER_PORT: "8761"
+      REDIS_PORT: "6379"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      AUTHSERVER_URI: "http://authenticationservice:8089/auth/user"
+      RABBIT_URI: "rabbit"
+      ENCRYPT_KEY: "IMSYMMETRIC"
+
+  organizationservice:
+    image: jade/organization-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8282:8282"
+    links:
+       - "eurekaserver:eurekaserver"
+       - "configserver:configserver"
+       - "zuulserver:zuulserver"
+       - "authenticationservice:authenticationservice"
+    environment:
+      PROFILE: "stage"
+      SERVER_PORT: "8282"
+      EUREKASERVER_PORT: "8761"
+      REDIS_PORT: "6379"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      AUTHSERVER_URI: "http://authenticationservice:8089/auth/user"
+      RABBIT_URI: "rabbit"
+      ENCRYPT_KEY: "IMSYMMETRIC"
+
+  rabbit:
+    image: rabbitmq:alpine
+    mem_limit: 536870912
+    ports:
+      - 5672:5672
+
+  redis:
+    image: redis:alpine
+    mem_limit: 536870912
+    ports:
+      - 6379:6379
+
+  #Attention:  Replace the value in the “command” attribute with the value supplied to you from Papertrail ${BUILD_NAME}
+#  logspout:
+#    image: gliderlabs/logspout
+#    command: syslog://logs7.papertrailapp.com:10864
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock

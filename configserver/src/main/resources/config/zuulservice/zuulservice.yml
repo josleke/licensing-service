@@ -1,0 +1,22 @@
+
+
+tracer.property: "I AM ZUUL (Service Gateway) DEFAULT"
+zuul:
+  ignored-services: '*'
+  prefix: /api
+  routes:
+      organizationms: /organization/**
+      bookms: /license/**
+      # Keyname Zuul will use to identify the service internally, say the service was written in Python
+      licensestatic:
+              path: /licensestatic/**
+#              url: http://licenseservice-static:8081
+              serviceId: licensestatic   # Defines a service ID that will be used to look up the service in Ribbon
+
+ribbon:
+  eureka:
+    enabled: false # Disables Eureka support in Ribbon
+licensestatic:
+  ribbon:
+    listOfServers: http://licenseservice-static:8081, http://licenseservice-static:8082 # List of servers used to route the request to
+

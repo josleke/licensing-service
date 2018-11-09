@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: organizationms
+  profiles:
+    active: default
+  cloud:
+    config:
+      enabled: true
+
+management:
+  security:
+    enabled: false

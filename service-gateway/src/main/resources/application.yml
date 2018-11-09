@@ -1,0 +1,44 @@
+server:
+  port: 5555
+
+spring:
+  application:
+          name: servicegateway
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# The ignored-services attribute is set to * to exclude the registration of alleureka service ID based routes
+# All defined services will be prefixed with /api.
+# Your organizationservice and licensingservice are mapped to the organization and licensing endpoints respectively.
+#zuul:
+#  ignored-services: '*'
+#  prefix: /api
+#  routes:
+#      organizationms: /organization/**
+#      bookms: /license/**
+#      # Keyname Zuul will use to identify the service internally, say the service was written in Python
+#      licensestatic:
+#              path: /licensestatic/**
+#              url: http://licenseservice-static:8081
+#              serviceId: licensestatic   # Defines a service ID that will be used to look up the service in Ribbon
+
+#ribbon:
+#  eureka:
+#    enabled: false # Disables Eureka support in Ribbon
+#licensestatic:
+#  ribbon:
+#    listOfServers: http://licenseservice-static:8081, http://licenseservice-static:8082 # List of servers used to route the request to
+
+
+zuul.sensitiveHeaders: Cookie,Set-Cookie
+
+management:
+  security:
+    enabled: false

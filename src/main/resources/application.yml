@@ -1,0 +1,6 @@
+logging:
+  level:
+    org.apache: OFF
+    org.apache.tomcat.util: OFF
+    org.springframework.web: INFO
+    org.springframework.security: INFO

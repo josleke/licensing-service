@@ -1,0 +1,13 @@
+
+spring:
+ application:
+    name: specialroutems
+ profiles:
+    active: default
+ cloud:
+    config:
+      uri: http://localhost:8888
+
+management:
+  security:
+    enabled: false

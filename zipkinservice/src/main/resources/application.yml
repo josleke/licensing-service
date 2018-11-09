@@ -1,0 +1,10 @@
+server:
+  port: 9411
+
+logging:
+  level:
+    com.jade: DEBUG
+    org.apache: INFO
+    org.apache.tomcat.util: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
