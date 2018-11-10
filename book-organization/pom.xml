@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Edgware.SR4</spring-cloud.version>
-        <docker.image.name>jade/organization-service</docker.image.name>
+        <docker.image.name>josleke/organization-service</docker.image.name>
         <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
     </properties>
 

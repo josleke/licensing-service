@@ -26,7 +26,7 @@
        <!-- <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>-->
         <spring-cloud.version>Edgware.SR4</spring-cloud.version>
         <java.version>1.8</java.version>
-        <docker.image.name>jade/license-service</docker.image.name>
+        <docker.image.name>josleke/license-service</docker.image.name>
         <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
         <!--<docker.image.tag>licensems</docker.image.tag>-->
     </properties>
